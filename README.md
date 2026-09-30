@@ -5,6 +5,8 @@ A small Chrome/Edge extension for the [Z.AI](https://z.ai) GLM Coding Plan usage
 - **Reset times in your time zone.** Z.AI shows the 5-hour and weekly limit reset times in UTC+8 (Singapore). The extension adds your local time next to each one, in green. Hover over it to see the original value and your time zone.
 - **GLM-5.3-Flash promo indicator.** Tells you whether the [GLM-5.3-Flash campaign](https://docs.z.ai/devpack/notice/event-glm-5.3-flash) window (23:00–09:00 UTC+8, until 2026-10-07) is active right now, and when the next one starts. You get a floating banner on z.ai and an **ON** badge on the toolbar icon.
 
+![Usage page with local times and the promo banner](docs/screenshot.png)
+
 > Unofficial. Not affiliated with or endorsed by Z.AI.
 
 ## Install
