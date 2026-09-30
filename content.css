@@ -1,0 +1,31 @@
+.zai-lt-local {
+  color: #16a34a;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: help;
+}
+
+#zai-lt-banner {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483647;
+  max-width: 340px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font: 500 13px/1.35 system-ui, sans-serif;
+  color: #e5e7eb;
+  background: #374151;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  user-select: none;
+}
+#zai-lt-banner.on { background: #15803d; color: #fff; }
+#zai-lt-banner.min {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  overflow: hidden;
+  color: transparent;
+  border-radius: 50%;
+}
