@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Z.AI Local Time",
-  "version": "1.0.0",
-  "description": "Shows Z.AI Coding Plan reset times in your local time zone and tells you when the GLM-5.3-Flash promo window is active.",
+  "version": "1.1.0",
+  "description": "Shows Z.AI Coding Plan reset times in your local time zone, tells you when the GLM-5.3-Flash promo window is active and when GLM peak hours (3x quota) are on.",
   "permissions": ["storage", "alarms"],
   "background": { "service_worker": "background.js" },
   "action": { "default_popup": "popup.html", "default_title": "Z.AI Local Time" },

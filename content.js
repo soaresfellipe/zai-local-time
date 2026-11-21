@@ -157,9 +157,25 @@ function renderBanner() {
     banner.addEventListener("click", () => banner.classList.toggle("min"));
     document.body.append(banner);
   }
-  const st = promoStatus();
-  banner.classList.toggle("on", !!st.active);
-  banner.textContent = promoText(st);
+  const ps = promoStatus();
+  const pk = peakStatus();
+  // Promo has priority over peak for the banner accent.
+  banner.classList.toggle("on", !!ps.active);
+  banner.classList.toggle("peak", !ps.active && !!pk.active);
+  banner.replaceChildren(
+    bannerLine(promoText(ps), ps.active ? "promo" : ""),
+    bannerLine(peakText(pk), pk.active ? "peak" : ""),
+  );
+}
+
+// One banner row: status dot + text ("promo"/"peak" when that state is active).
+function bannerLine(text, kind) {
+  const row = document.createElement("div");
+  row.className = kind ? `row ${kind}` : "row";
+  const dot = document.createElement("span");
+  dot.className = kind ? `dot ${kind}` : "dot";
+  row.append(dot, document.createTextNode(text));
+  return row;
 }
 
 chrome.storage.sync.get(settings, (s) => {

@@ -5,8 +5,9 @@
 <style>
   body { width: 300px; margin: 0; padding: 14px; font: 13px/1.45 system-ui, sans-serif; color: #111827; }
   h1 { font-size: 14px; margin: 0 0 10px; }
-  #status { padding: 10px; border-radius: 8px; background: #f3f4f6; margin-bottom: 10px; }
+  #status, #peak { padding: 10px; border-radius: 8px; background: #f3f4f6; margin-bottom: 10px; }
   #status.on { background: #dcfce7; color: #14532d; }
+  #peak.peak { background: #fef3c7; color: #92400e; }
   .muted { color: #6b7280; font-size: 12px; }
   label { display: flex; gap: 6px; align-items: center; margin: 6px 0; }
   a { color: #2563eb; }
@@ -15,9 +16,12 @@
 <body>
   <h1>Z.AI Local Time</h1>
   <div id="status"></div>
+  <div id="peak"></div>
   <p class="muted" id="tz"></p>
   <p class="muted">Promo window: 23:00–09:00 (UTC+8) = <b id="win"></b> in your time zone.
     Valid until 2026-10-07. <a href="https://docs.z.ai/devpack/notice/event-glm-5.3-flash" target="_blank">Details</a></p>
+  <p class="muted">Peak hours: Mon–Fri 14:00–18:00 (UTC+8) = <b id="peakWin"></b> in your time zone.
+    Peak consumes 3× quota (GLM-5.3) / 1.2× (GLM-5.3-Flash). <a href="https://docs.z.ai/devpack/notice/usage-revision" target="_blank">Details</a></p>
   <label><input type="checkbox" id="enabled"> Convert times on the page</label>
   <label><input type="checkbox" id="showBanner"> Show promo banner on the page</label>
   <script src="promo.js"></script>

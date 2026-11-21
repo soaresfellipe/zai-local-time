@@ -1,6 +1,8 @@
 // Shared logic (content script, popup and service worker).
-// Source: https://docs.z.ai/devpack/notice/event-glm-5.3-flash
-// If Z.AI extends the campaign, just update PROMO below.
+// Sources: https://docs.z.ai/devpack/notice/event-glm-5.3-flash
+//          https://docs.z.ai/devpack/notice/usage-revision
+// If Z.AI extends the campaign, just update PROMO below; if the peak definition
+// changes, update PEAK.
 
 const ZAI_SOURCE_OFFSET_HOURS = 8; // time zone used by the site: Singapore / UTC+8, no DST
 
@@ -12,6 +14,13 @@ const PROMO = {
   // Daily window: 23:00 to 09:00 the next day (UTC+8)
   dailyStartHour: 23,
   dailyEndHour: 9,
+};
+
+// Peak hours: Monday to Friday, 14:00-18:00 (UTC+8); everything else (including
+// weekends) is off-peak. Peak consumes 3x quota for GLM-5.3 and 1.2x for Flash.
+const PEAK = {
+  startHour: 14,
+  endHour: 18,
 };
 
 // Converts a UTC+8 wall-clock date/time into an absolute Date.
@@ -50,6 +59,32 @@ function promoStatus(now = new Date()) {
   };
 }
 
+// Returns {active, start, end, next} for the Mon-Fri 14:00-18:00 (UTC+8) window.
+function peakStatus(now = new Date()) {
+  // Wall-clock in UTC+8: step the UTC+8 calendar, so local DST never matters.
+  const src = new Date(now.getTime() + ZAI_SOURCE_OFFSET_HOURS * 3600e3);
+  const y = src.getUTCFullYear(), mo = src.getUTCMonth() + 1, d = src.getUTCDate();
+  const mins = src.getUTCHours() * 60 + src.getUTCMinutes();
+
+  if (src.getUTCDay() >= 1 && src.getUTCDay() <= 5 &&
+      mins >= PEAK.startHour * 60 && mins < PEAK.endHour * 60)
+    return {
+      active: true,
+      start: fromSourceTime(y, mo, d, PEAK.startHour),
+      end: fromSourceTime(y, mo, d, PEAK.endHour),
+    };
+
+  // Next weekday 14:00 (skips the rest of today and weekends).
+  const weekend = src.getUTCDay() === 0 || src.getUTCDay() === 6;
+  for (let k = 0; k <= 7; k++) {
+    if (new Date(Date.UTC(y, mo - 1, d + k)).getUTCDay() % 6 === 0) continue; // Sun(0)/Sat(6)
+    const start = fromSourceTime(y, mo, d + k, PEAK.startHour);
+    if (start > now)
+      return { active: false, weekend, next: { start, end: fromSourceTime(y, mo, d + k, PEAK.endHour) } };
+  }
+  return { active: false, weekend, next: null };
+}
+
 function fmtLocal(date, withDate = true) {
   const opts = { hour: "2-digit", minute: "2-digit" };
   if (withDate) Object.assign(opts, { day: "2-digit", month: "2-digit" });
@@ -75,4 +110,13 @@ function promoText(st, now = new Date()) {
   if (st.next)
     return `${PROMO.model} promo inactive. Next window: ${fmtLocal(st.next.start)} (in ${fmtDuration(st.next.start - now)})`;
   return `${PROMO.model} promo inactive`;
+}
+
+function peakText(st, now = new Date()) {
+  if (st.active)
+    return `Peak hours NOW until ${fmtLocal(st.end, false)} — 3x quota (GLM-5.3) / 1.2x (Flash) (${fmtDuration(st.end - now)} left)`;
+  const off = `Off-peak now${st.weekend ? " (weekend)" : ""} — 1x quota`;
+  if (st.next)
+    return `${off}. Next peak: ${fmtLocal(st.next.start)} (in ${fmtDuration(st.next.start - now)})`;
+  return off;
 }

@@ -3,6 +3,14 @@ const box = document.getElementById("status");
 box.textContent = promoText(st);
 box.classList.toggle("on", !!st.active);
 
+const pk = peakStatus();
+const peakBox = document.getElementById("peak");
+peakBox.textContent = peakText(pk);
+peakBox.classList.toggle("peak", !!pk.active);
+const cur = pk.active ? pk : pk.next;
+if (cur)
+  document.getElementById("peakWin").textContent = `${fmtLocal(cur.start, false)}–${fmtLocal(cur.end, false)}`;
+
 document.getElementById("tz").textContent = `Your time zone: ${localTzLabel()}`;
 
 const today = new Date();

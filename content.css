@@ -5,27 +5,46 @@
   cursor: help;
 }
 
+/* Floating banner styled after the z.ai usage page:
+   card #1B1B1F on page #121214, accent blue #1A66FF. */
 #zai-lt-banner {
   position: fixed;
   right: 16px;
   bottom: 16px;
   z-index: 2147483647;
   max-width: 340px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font: 500 13px/1.35 system-ui, sans-serif;
-  color: #e5e7eb;
-  background: #374151;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font: 500 13px/1.45 system-ui, sans-serif;
+  color: #d4d4d8;
+  background: rgba(27, 27, 31, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   user-select: none;
 }
-#zai-lt-banner.on { background: #15803d; color: #fff; }
+#zai-lt-banner .row { display: flex; align-items: flex-start; gap: 8px; }
+#zai-lt-banner .row + .row { margin-top: 6px; }
+#zai-lt-banner .dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #1a66ff; /* z.ai accent blue */
+}
+#zai-lt-banner .dot.promo { background: #34d399; }
+#zai-lt-banner .dot.peak { background: #fbbf24; }
+#zai-lt-banner .row.promo { color: #6ee7b7; }
+#zai-lt-banner .row.peak { color: #fcd34d; }
+#zai-lt-banner.on { border-color: rgba(52, 211, 153, 0.4); }
+#zai-lt-banner.peak { border-color: rgba(251, 191, 36, 0.4); }
 #zai-lt-banner.min {
   width: 14px;
   height: 14px;
   padding: 0;
   overflow: hidden;
-  color: transparent;
   border-radius: 50%;
 }
+#zai-lt-banner.min .row { display: none; }

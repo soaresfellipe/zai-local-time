@@ -4,6 +4,7 @@ A small Chrome/Edge extension for the [Z.AI](https://z.ai) GLM Coding Plan usage
 
 - **Reset times in your time zone.** Z.AI shows the 5-hour and weekly limit reset times in UTC+8 (Singapore). The extension adds your local time next to each one, in green. Hover over it to see the original value and your time zone.
 - **GLM-5.3-Flash promo indicator.** Tells you whether the [GLM-5.3-Flash campaign](https://docs.z.ai/devpack/notice/event-glm-5.3-flash) window (23:00–09:00 UTC+8, until 2026-10-07) is active right now, and when the next one starts. You get a floating banner on z.ai and an **ON** badge on the toolbar icon.
+- **Peak hours indicator.** Peak hours are Monday to Friday, 14:00–18:00 UTC+8 ([official definition](https://docs.z.ai/devpack/notice/usage-revision)) — outside them, quota is consumed at a lower rate. The extension converts the window to your local time, shows it in the popup and in the floating banner, and turns the toolbar badge amber (**PK**) while peak is active (the green **ON** promo badge has priority).
 
 ![Usage page with local times and the promo banner](docs/screenshot.png)
 
@@ -29,11 +30,11 @@ After you edit any file, click **Reload** on the extension card and refresh the 
 | `Reset Time: 2026-10-03 07:22` (weekly limit) | Converts it from UTC+8 |
 | `Last refresh time: ...` | Leaves it alone, because it is already in your browser's time zone |
 
-The popup shows the promo status, today's window in your local time, and two switches: one for converting times on the page and one for the banner.
+The popup shows the promo status and peak hours status, today's promo window and the current/next peak window in your local time, plus two switches: one for converting times on the page and one for the banner.
 
-## Updating the promo
+## Updating the promo and peak hours
 
-The campaign dates and daily window live in the `PROMO` object at the top of [`promo.js`](promo.js). If Z.AI extends or changes the campaign, edit it there.
+The campaign dates and daily window live in the `PROMO` object at the top of [`promo.js`](promo.js). If Z.AI extends or changes the campaign, edit it there. The peak-hours definition (`PEAK`) lives right below it, if Z.AI ever changes the peak window.
 
 ## Privacy
 
